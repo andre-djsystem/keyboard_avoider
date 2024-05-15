@@ -6,6 +6,8 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
 
+  MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
     return Container(
       color: color,
       child: KeyboardAvoider(
-        child: Placeholder(),
+        child: const Placeholder(),
       ),
     );
   }

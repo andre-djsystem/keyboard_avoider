@@ -54,7 +54,7 @@ class MyWidget extends StatelessWidget {
 ## Why not use a Scaffold?
 
 Flutter comes with a built-in `Scaffold` widget that automatically adjusts the bottom padding of its body widget to accomodate the on-screen keyboard. However, it comes with 2 major caveats:
- 
+
 1. It pushes all content up, which you may not want.
 1. It assumes that it fills the whole screen, which it may not.
 
