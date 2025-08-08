@@ -40,7 +40,8 @@ class KeyboardAvoider extends StatefulWidget {
   State<KeyboardAvoider> createState() => _KeyboardAvoiderState();
 }
 
-class _KeyboardAvoiderState extends State<KeyboardAvoider> with WidgetsBindingObserver {
+class _KeyboardAvoiderState extends State<KeyboardAvoider>
+    with WidgetsBindingObserver {
   final _animationKey = GlobalKey<ImplicitlyAnimatedWidgetState>();
   void Function(AnimationStatus)? _animationListener;
   ScrollController? _scrollController;
@@ -56,7 +57,8 @@ class _KeyboardAvoiderState extends State<KeyboardAvoider> with WidgetsBindingOb
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     if (_animationListener != null) {
-      _animationKey.currentState?.animation.removeStatusListener(_animationListener!);
+      _animationKey.currentState?.animation
+          .removeStatusListener(_animationListener!);
     }
     super.dispose();
   }
@@ -68,7 +70,8 @@ class _KeyboardAvoiderState extends State<KeyboardAvoider> with WidgetsBindingOb
     if (_animationListener == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _animationListener = _animationStatusChanged;
-        _animationKey.currentState!.animation.addStatusListener(_animationListener!);
+        _animationKey.currentState!.animation
+            .addStatusListener(_animationListener!);
       });
     }
 
@@ -144,7 +147,8 @@ class _KeyboardAvoiderState extends State<KeyboardAvoider> with WidgetsBindingOb
 
     // Calculate Rect of widget on screen
     final object = context.findRenderObject();
-    final box = object as RenderBox;
+    if (object == null || object is! RenderBox) return;
+    final box = object;
     final offset = box.localToGlobal(Offset.zero);
     final widgetRect = Rect.fromLTWH(
       offset.dx,
@@ -218,7 +222,10 @@ class _KeyboardAvoiderState extends State<KeyboardAvoider> with WidgetsBindingOb
     // Calculate the offset needed to show the object in the [ScrollView]
     // so that its bottom touches the top of the keyboard.
     final viewport = RenderAbstractViewport.of(object);
-    final offset = viewport.getOffsetToReveal(object, 1.0).offset + widget.focusPadding;
+    if (_scrollController == null || !_scrollController!.hasClients) return;
+
+    final offset =
+        viewport.getOffsetToReveal(object, 1.0).offset + widget.focusPadding;
 
     // If the object is covered by the keyboard, scroll to reveal it,
     // and add [focusPadding] between it and top of the keyboard.
